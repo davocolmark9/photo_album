@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Photo - Photo Album</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 50px auto; padding: 20px; }
+        input, button, textarea { display: block; width: 100%; margin: 10px 0; padding: 10px; box-sizing: border-box; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Upload Photo to {{ view.album.title }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+    </form>
+    <p><a href="{% url 'album_detail' pk=view.album.pk %}">← Back to Album</a></p>
+</body>
+</html>

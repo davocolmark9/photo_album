@@ -7,6 +7,7 @@ from .views import (
     AlbumCreateView,
     AlbumUpdateView,
     AlbumDeleteView,
+    PhotoUploadView,  # ← ADD THIS
 )
 
 urlpatterns = [
@@ -15,6 +16,7 @@ urlpatterns = [
     path('create/', AlbumCreateView.as_view(), name='album_create'),
     path('update/<int:pk>/', AlbumUpdateView.as_view(), name='album_update'),
     path('delete/<int:pk>/', AlbumDeleteView.as_view(), name='album_delete'),
+    path('album/<int:album_pk>/upload/', PhotoUploadView.as_view(), name='photo_upload'),  # ← ADD THIS
     
     # Auth URLs
     path('signup/', SignUpView.as_view(), name='signup'),
