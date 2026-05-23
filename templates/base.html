@@ -287,7 +287,53 @@
         .row .col-md-6:nth-child(4) .animate-in { animation-delay: 0.3s; }
         .row .col-md-6:nth-child(5) .animate-in { animation-delay: 0.4s; }
         .row .col-md-6:nth-child(6) .animate-in { animation-delay: 0.5s; }
-        
+
+
+                /* Upload Zone */
+        .upload-zone {
+            border: 2px dashed var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--primary);
+            background: #f0f4ff !important;
+        }
+
+        .upload-zone.dragover {
+            border-color: #10b981;
+            background: #ecfdf5 !important;
+        }
+
+        /* Form enhancements */
+        .form-control-lg {
+            font-size: 1.1rem;
+            padding: 14px 18px;
+        }
+
+        /* Success button gradient */
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+        }
+
+        /* Card header enhancements */
+        .card > div:first-child {
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Smooth transitions */
+        .upload-zone, .btn, .form-control {
+            transition: all 0.3s ease;
+        }
     </style>
     {% block extra_css %}{% endblock %}
 </head>

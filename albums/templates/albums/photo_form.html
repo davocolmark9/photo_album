@@ -5,37 +5,173 @@
 {% block content %}
 <div class="row justify-content-center animate-in">
     <div class="col-md-8 col-lg-6">
-        <div class="card p-4 p-md-5">
-            <div class="text-center mb-4">
-                <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" 
-                     style="width: 70px; height: 70px; background: linear-gradient(135deg, #10b981, #059669);">
-                    <i class="fas fa-cloud-upload-alt text-white fa-lg"></i>
+        <div class="card p-0 overflow-hidden">
+            <!-- Header Banner -->
+            <div class="p-4 p-md-5 text-white position-relative overflow-hidden" 
+                 style="background: linear-gradient(135deg, #10b981, #059669);">
+                <div class="position-relative z-1">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3"
+                             style="width: 60px; height: 60px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px);">
+                            <i class="fas fa-cloud-upload-alt fa-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="fw-bold mb-0">Upload Photo</h3>
+                            <p class="mb-0 opacity-75">to <strong>{{ view.album.title }}</strong></p>
+                        </div>
+                    </div>
                 </div>
-                <h3 class="fw-bold">Upload Photo</h3>
-                <p class="text-muted mb-0">to <strong>{{ view.album.title }}</strong></p>
+                <!-- Decorative elements -->
+                <div class="position-absolute" style="top: -40px; right: -40px; width: 180px; height: 180px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                <div class="position-absolute" style="bottom: -60px; left: 30%; width: 120px; height: 120px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
             </div>
-            
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="mb-4">
-                    <label class="form-label fw-medium">Choose Image</label>
-                    <input type="file" name="image" class="form-control" accept="image/*" required>
-                    <div class="form-text">Supported formats: JPG, PNG, GIF, WebP</div>
-                </div>
-                <div class="mb-4">
-                    <label class="form-label fw-medium">Caption <span class="text-muted">(optional)</span></label>
-                    <input type="text" name="caption" class="form-control" placeholder="Add a description for this photo...">
-                </div>
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-primary flex-fill">
-                        <i class="fas fa-upload me-2"></i>Upload Photo
-                    </button>
-                    <a href="{% url 'album_detail' pk=view.album.pk %}" class="btn btn-outline-secondary">
-                        Cancel
-                    </a>
-                </div>
-            </form>
+
+            <div class="p-4 p-md-5">
+                <form method="post" enctype="multipart/form-data" id="uploadForm">
+                    {% csrf_token %}
+                    
+                    <!-- File Upload Zone -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold d-flex align-items-center">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center me-2"
+                                 style="width: 32px; height: 32px; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; font-size: 0.8rem;">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            Choose Image
+                        </label>
+                        
+                        <!-- Drag & Drop Zone -->
+                        <div class="upload-zone border-2 border-dashed rounded-4 p-4 text-center position-relative" 
+                             id="dropZone"
+                             style="border-color: var(--border); background: #f8fafc; transition: all 0.3s ease; cursor: pointer;">
+                            <input type="file" name="image" id="fileInput" class="position-absolute top-0 start-0 w-100 h-100 opacity-0" 
+                                   accept="image/*" required style="cursor: pointer;">
+                            
+                            <div class="upload-placeholder" id="uploadPlaceholder">
+                                <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
+                                     style="width: 80px; height: 80px; background: linear-gradient(135deg, #e0e7ff, #c7d2fe);">
+                                    <i class="fas fa-cloud-upload-alt fa-2x" style="color: var(--primary);"></i>
+                                </div>
+                                <h5 class="fw-bold mb-2">Drop your photo here</h5>
+                                <p class="text-muted mb-0">or click to browse</p>
+                                <p class="small text-muted mt-2">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    JPG, PNG, GIF, WebP up to 10MB
+                                </p>
+                            </div>
+
+                            <!-- Preview (hidden initially) -->
+                            <div class="upload-preview d-none" id="uploadPreview">
+                                <img id="previewImage" src="" alt="Preview" class="rounded-4 mb-3" style="max-height: 200px; max-width: 100%; object-fit: cover;">
+                                <p class="mb-0 fw-medium text-success">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    <span id="fileName">image.jpg</span>
+                                </p>
+                                <button type="button" class="btn btn-link text-muted mt-2" onclick="resetUpload()">
+                                    <i class="fas fa-redo me-1"></i>Choose different file
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Caption -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold d-flex align-items-center">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center me-2"
+                                 style="width: 32px; height: 32px; background: linear-gradient(135deg, #ec4899, #db2777); color: white; font-size: 0.8rem;">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            Caption <span class="text-muted fw-normal ms-2">(optional)</span>
+                        </label>
+                        <input type="text" name="caption" class="form-control form-control-lg" 
+                               placeholder="What's the story behind this photo?"
+                               style="border-left: 4px solid #ec4899;">
+                        <div class="form-text mt-2">
+                            <i class="fas fa-magic text-warning me-1"></i>
+                            A good caption brings your photo to life
+                        </div>
+                    </div>
+
+                    <!-- Album Info Card -->
+                    <div class="card mb-4 border-0" style="background: linear-gradient(135deg, #ecfdf5, #d1fae5);">
+                        <div class="card-body p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center me-3"
+                                     style="width: 40px; height: 40px; background: #10b981; color: white;">
+                                    <i class="fas fa-folder-open"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Uploading to</h6>
+                                    <p class="mb-0 text-muted">{{ view.album.title }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex gap-3">
+                        <button type="submit" class="btn btn-success btn-lg flex-fill" id="submitBtn">
+                            <i class="fas fa-upload me-2"></i>Upload Photo
+                        </button>
+                        <a href="{% url 'album_detail' pk=view.album.pk %}" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+    const uploadPreview = document.getElementById('uploadPreview');
+    const previewImage = document.getElementById('previewImage');
+    const fileName = document.getElementById('fileName');
+
+    // Drag & drop visual feedback
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#10b981';
+        dropZone.style.background = '#ecfdf5';
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.style.borderColor = '';
+        dropZone.style.background = '';
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '';
+        dropZone.style.background = '';
+    });
+
+    // File selection handler
+    fileInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            const file = this.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                fileName.textContent = file.name;
+                uploadPlaceholder.classList.add('d-none');
+                uploadPreview.classList.remove('d-none');
+            };
+            
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function resetUpload() {
+        fileInput.value = '';
+        uploadPreview.classList.add('d-none');
+        uploadPlaceholder.classList.remove('d-none');
+    }
+</script>
 {% endblock %}
