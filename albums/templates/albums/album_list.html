@@ -20,7 +20,7 @@
 {% if albums %}
     <div class="row g-4">
         {% for album in albums %}
-        <div class="col-md-6 col-lg-4 animate-in" style="animation-delay: {{ forloop.counter0 }}00ms;">
+      <div class="col-md-6 col-lg-4 animate-in">
             <div class="card album-card h-100">
                 <div class="position-relative overflow-hidden" style="height: 220px;">
                     {% if album.photos.first %}
