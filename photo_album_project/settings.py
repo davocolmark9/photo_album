@@ -82,7 +82,7 @@ SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://photoalbum1-9cry.onrender.com',
+    'https://photo-album-09jw.onrender.com',
 ]
 
 LOGIN_URL = '/login/'           # where to redirect unauthenticated users
