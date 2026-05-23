@@ -8,9 +8,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='dev-secret-key')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = [ 'https://photo-album-09jw.onrender.com',
+ALLOWED_HOSTS = [
+    'photo-album-09jw.onrender.com',
     'localhost',
-    '127.0.0.1',]
+    '127.0.0.1',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
