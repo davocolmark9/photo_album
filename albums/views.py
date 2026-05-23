@@ -11,9 +11,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, get_object_or_404
-from .models import Album, Photo  # ← Make sure Photo is imported
+from .models import Album, Photo
 from .mixins import OwnerRequiredMixin
-from .forms import SignUpForm, PhotoForm  # ← Make sure PhotoForm is imported
+from .forms import SignUpForm, PhotoForm
 
 
 class PhotoUploadView(LoginRequiredMixin, CreateView):
@@ -45,4 +45,41 @@ class SignUpView(CreateView):
         return response
 
 
-# ... rest of your views (AlbumListView, etc.) stay the same
+class AlbumListView(LoginRequiredMixin, ListView):
+    model = Album
+    template_name = 'albums/album_list.html'
+    context_object_name = 'albums'
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Album.objects.all()
+        return Album.objects.filter(owner=self.request.user)
+
+
+class AlbumDetailView(LoginRequiredMixin, DetailView):
+    model = Album
+    template_name = 'albums/album_detail.html'
+
+
+class AlbumCreateView(LoginRequiredMixin, CreateView):
+    model = Album
+    fields = ['title', 'description']
+    template_name = 'albums/album_form.html'
+    success_url = reverse_lazy('album_list')
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+
+class AlbumUpdateView(LoginRequiredMixin, OwnerRequiredMixin, UpdateView):
+    model = Album
+    fields = ['title', 'description']
+    template_name = 'albums/album_form.html'
+    success_url = reverse_lazy('album_list')
+
+
+class AlbumDeleteView(LoginRequiredMixin, OwnerRequiredMixin, DeleteView):
+    model = Album
+    template_name = 'albums/album_confirm_delete.html'
+    success_url = reverse_lazy('album_list')
