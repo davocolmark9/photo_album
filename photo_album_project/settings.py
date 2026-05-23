@@ -77,7 +77,7 @@ SESSION_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = True
 
 ALLOWED_HOSTS = [
-    'photo-album-09jw.onrender.com',
+    'https://photo-album-09jw.onrender.com',
     'localhost',
     '127.0.0.1',
 ]
