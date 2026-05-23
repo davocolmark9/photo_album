@@ -61,16 +61,22 @@ class AlbumDetailView(LoginRequiredMixin, DetailView):
     template_name = 'albums/album_detail.html'
 
 
+from django.template.loader import get_template, TemplateDoesNotExist
+
 class AlbumCreateView(LoginRequiredMixin, CreateView):
     model = Album
     fields = ['title', 'description']
     template_name = 'albums/album_form.html'
     success_url = reverse_lazy('album_list')
 
-    def form_valid(self, form):
-        form.instance.owner = self.request.user
-        return super().form_valid(form)
-
+    def get(self, request, *args, **kwargs):
+        # Debug: verify template exists
+        try:
+            get_template(self.template_name)
+        except TemplateDoesNotExist:
+            from django.http import HttpResponse
+            return HttpResponse(f"TEMPLATE NOT FOUND: {self.template_name}", status=500)
+        return super().get(request, *args, **kwargs)
 
 class AlbumUpdateView(LoginRequiredMixin, OwnerRequiredMixin, UpdateView):
     model = Album
