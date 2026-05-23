@@ -6,7 +6,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY', default='dev-secret-key')
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -76,7 +76,11 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = True
 
-ALLOWED_HOSTS = ['https://photo-album-09jw.onrender.com', 'localhost']
+ALLOWED_HOSTS = ['https://photo-album-09jw.onrender.com',]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://photo-album-09jw.onrender.com',
+]
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
