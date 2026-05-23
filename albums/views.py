@@ -9,6 +9,7 @@ from django.views.generic import (
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
+from django.contrib.auth.models import User  # ← ADD THIS LINE
 from django.shortcuts import redirect
 from .models import Album
 from .mixins import OwnerRequiredMixin
