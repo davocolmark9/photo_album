@@ -10,9 +10,10 @@
             <p class="mb-0">Capture, organize, and cherish your precious memories</p>
         </div>
         <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-            <a href="{% url 'album_create' %}" class="btn btn-light btn-lg fw-bold shadow-sm" style="color: #6366f1;">
-                <i class="fas fa-plus-circle me-2"></i>Create Album
-            </a>
+           <a href="{% url 'album_create' %}" class="btn btn-light btn-lg fw-bold shadow-sm" 
+   style="color: #6366f1; position: relative; z-index: 100;">
+    <i class="fas fa-plus-circle me-2"></i>Create Album
+</a>
         </div>
     </div>
 </div>
@@ -73,5 +74,7 @@
             <i class="fas fa-plus-circle me-2"></i>Create First Album
         </a>
     </div>
+
+    
 {% endif %}
 {% endblock %}
