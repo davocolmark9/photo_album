@@ -8,8 +8,23 @@ from django.views.generic import (
 
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import login
+from django.shortcuts import redirect
 from .models import Album
 from .mixins import OwnerRequiredMixin
+from .forms import SignUpForm
+
+
+class SignUpView(CreateView):
+    model = User
+    form_class = SignUpForm
+    template_name = 'albums/signup.html'
+    success_url = reverse_lazy('album_list')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        login(self.request, self.object)
+        return response
 
 
 class AlbumListView(LoginRequiredMixin, ListView):

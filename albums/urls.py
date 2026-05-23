@@ -1,6 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from .views import (
+    SignUpView,
     AlbumListView,
     AlbumDetailView,
     AlbumCreateView,
@@ -16,6 +17,7 @@ urlpatterns = [
     path('delete/<int:pk>/', AlbumDeleteView.as_view(), name='album_delete'),
     
     # Auth URLs
+    path('signup/', SignUpView.as_view(), name='signup'),
     path('login/', auth_views.LoginView.as_view(template_name='albums/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
 ]
