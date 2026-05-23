@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: photo-album-app
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn photo_album_project.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
