@@ -83,3 +83,13 @@ class AlbumDeleteView(LoginRequiredMixin, OwnerRequiredMixin, DeleteView):
     model = Album
     template_name = 'albums/album_confirm_delete.html'
     success_url = reverse_lazy('album_list')
+
+
+from django.contrib import messages
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+def custom_logout(request):
+    logout(request)
+    messages.success(request, 'You have been successfully logged out.')
+    return redirect('login')
