@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}My Albums - PhotoAlbum{% endblock %}
+
+{% block content %}
+<div class="hero animate-in">
+    <div class="row align-items-center">
+        <div class="col-lg-8">
+            <h1><i class="fas fa-images me-3"></i>My Photo Albums</h1>
+            <p class="mb-0">Capture, organize, and cherish your precious memories</p>
+        </div>
+        <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+            <a href="{% url 'album_create' %}" class="btn btn-light btn-lg">
+                <i class="fas fa-plus-circle me-2"></i>Create Album
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if albums %}
+    <div class="row g-4">
+        {% for album in albums %}
+        <div class="col-md-6 col-lg-4 animate-in" style="animation-delay: {{ forloop.counter0 }}00ms;">
+            <div class="card album-card h-100">
+                <div class="position-relative overflow-hidden" style="height: 220px;">
+                    {% if album.photos.first %}
+                        <img src="{{ album.photos.first.image.url }}" class="w-100 h-100" style="object-fit: cover;" alt="{{ album.title }}">
+                    {% else %}
+                        <div class="w-100 h-100 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #e0e7ff, #c7d2fe);">
+                            <i class="fas fa-image fa-3x" style="color: var(--primary); opacity: 0.5;"></i>
+                        </div>
+                    {% endif %}
+                    <div class="album-overlay">
+                        <h5 class="fw-bold mb-1">{{ album.title }}</h5>
+                        <small><i class="fas fa-images me-1"></i>{{ album.photos.count }} photos</small>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-muted mb-3" style="height: 48px; overflow: hidden;">{{ album.description|default:"No description" }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="fas fa-calendar-alt me-1"></i>{{ album.created_at|date:"M d, Y" }}
+                        </small>
+                        <div class="dropdown">
+                            <button class="btn btn-link text-dark" data-bs-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'album_detail' album.pk %}">
+                                    <i class="fas fa-eye me-2 text-primary"></i>View
+                                </a></li>
+                                <li><a class="dropdown-item" href="{% url 'album_update' album.pk %}">
+                                    <i class="fas fa-edit me-2 text-warning"></i>Edit
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="{% url 'album_delete' album.pk %}">
+                                    <i class="fas fa-trash-alt me-2"></i>Delete
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state animate-in">
+        <i class="fas fa-camera"></i>
+        <h3 class="fw-bold mb-3">No Albums Yet</h3>
+        <p class="mb-4">Start your collection by creating your first photo album</p>
+        <a href="{% url 'album_create' %}" class="btn btn-primary btn-lg">
+            <i class="fas fa-plus-circle me-2"></i>Create First Album
+        </a>
+    </div>
+{% endif %}
+{% endblock %}

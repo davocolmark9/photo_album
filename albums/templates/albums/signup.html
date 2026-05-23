@@ -1,41 +1,55 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Sign Up - Photo Album</title>
-    <style>
-        body { font-family: sans-serif; max-width: 400px; margin: 80px auto; padding: 20px; }
-        input, button { display: block; width: 100%; margin: 10px 0; padding: 10px; box-sizing: border-box; }
-        button { background: #28a745; color: white; border: none; cursor: pointer; }
-        .error { color: red; font-size: 0.9em; }
-        .helptext { font-size: 0.8em; color: #666; }
-        a { color: #007bff; }
-    </style>
-</head>
-<body>
-    <h2>Create Account</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
-        
-        <label>Username:</label>
-        {{ form.username }}
-        {{ form.username.errors }}
-        <span class="helptext">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
-        
-        <label>Email:</label>
-        {{ form.email }}
-        {{ form.email.errors }}
-        
-        <label>Password:</label>
-        {{ form.password }}
-        {{ form.password.errors }}
-        
-        <label>Confirm Password:</label>
-        {{ form.password_confirm }}
-        {{ form.password_confirm.errors }}
-        
-        <button type="submit">Sign Up</button>
-    </form>
-    <p>Already have an account? <a href="{% url 'login' %}">Log in</a></p>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Sign Up - PhotoAlbum{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-md-5 col-lg-4 animate-in">
+        <div class="card p-4">
+            <div class="text-center mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" 
+                     style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--secondary), var(--primary));">
+                    <i class="fas fa-user-plus text-white fa-2x"></i>
+                </div>
+                <h3 class="fw-bold">Create Account</h3>
+                <p class="text-muted">Start your photo journey today</p>
+            </div>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label fw-medium">Username</label>
+                    <input type="text" name="username" class="form-control" placeholder="Choose a username" required>
+                    {% if form.username.errors %}
+                        <div class="text-danger small mt-1">{{ form.username.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-medium">Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="your@email.com" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-medium">Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="Create a password" required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-medium">Confirm Password</label>
+                    <input type="password" name="password_confirm" class="form-control" placeholder="Repeat your password" required>
+                    {% if form.password_confirm.errors %}
+                        <div class="text-danger small mt-1">{{ form.password_confirm.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mb-3">
+                    <i class="fas fa-user-plus me-2"></i>Create Account
+                </button>
+            </form>
+            
+            <div class="text-center">
+                <p class="text-muted mb-0">Already have an account? 
+                    <a href="{% url 'login' %}" class="text-decoration-none fw-bold" style="color: var(--primary);">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
