@@ -85,5 +85,6 @@ CSRF_TRUSTED_ORIGINS = [
     'https://photo-album-09jw.onrender.com',
 ]
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'           # where to redirect unauthenticated users
+LOGIN_REDIRECT_URL = '/'        # after login, go to album list
 LOGOUT_REDIRECT_URL = '/login/'
